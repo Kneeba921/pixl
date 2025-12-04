@@ -30,4 +30,9 @@ class Post extends Model
   {
     return $this->hasMany(Post::class, 'parent_id');
   }
+
+  public function likes()
+  {
+    return $this->hasMany(Like::class);
+  }
 }

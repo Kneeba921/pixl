@@ -31,4 +31,29 @@ class Profile extends Model
   {
     return $this->hasMany(Post::class)->whereNull('parent_id');
   }
+
+  public function likes()
+  {
+    return $this->hasMany(Like::class);
+  }
+
+  public function followers()
+  {
+    return $this->belongsToMany(
+      Profile::class,
+      'follows',
+      'following_profile_id',
+      'follower_profile_id'
+    );
+  }
+
+  public function following()
+  {
+    return $this->belongsToMany(
+      Profile::class,
+      'follows',
+      'follower_profile_id',
+      'following_profile_id'
+    );
+  }
 }

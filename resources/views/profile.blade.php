@@ -9,7 +9,7 @@
         </a>
         <!-- Profile header -->
         <header>
-            <img src="/images/cover.png" alt="" />
+            <img src="/resources/images/cover.png" alt="" />
             <div class="-mt-10 flex flex-wrap items-end justify-between gap-4 md:-mt-16">
                 <div class="flex items-end gap-4">
                     <img src="/images/adrian.png" alt="Avatar for Adrian" class="size-20 object-cover md:size-32" />
@@ -73,7 +73,7 @@
             <p class="text-center">That's all, folks!</p>
             <hr class="border-pixl-light/10 my-4" />
             <!-- White noise -->
-            <div class="h-20 bg-[url(/images/white-noise.gif)]"></div>
+            <div class="h-20 bg-[url(/resources/images/white-noise.gif)]"></div>
         </footer>
     </main>
 

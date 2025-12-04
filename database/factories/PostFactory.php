@@ -21,6 +21,7 @@ class PostFactory extends Factory
     return [
       'profile_id' => Profile::factory(),
       'parent_id' => null,
+      'repost_of_id' => null,
       'content' => $this->faker->realText(200)
     ];
   }
@@ -29,6 +30,22 @@ class PostFactory extends Factory
   {
     return $this->state([
       'parent_id' => $parentPost->id,
+      'content' => $this->faker->realText(200)
+    ]);
+  }
+
+  public function repost(Post $originalPost)
+  {
+    return $this->state([
+      'repost_of_id' => $originalPost->id,
+      'content' => null
+    ]);
+  }
+
+  public function quotePost(Post $originalPost)
+  {
+    return $this->state([
+      'repost_of_id' => $originalPost->id,
       'content' => $this->faker->realText(200)
     ]);
   }

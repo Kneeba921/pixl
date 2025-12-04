@@ -13,6 +13,7 @@ class Post extends Model
   protected $fillable = [
     'parent_id',
     'profile_id',
+    'repost_of_id',
     'content'
   ];
 
@@ -41,6 +42,11 @@ class Post extends Model
     return $this->hasMany(Post::class, 'repost_of_id');
   }
 
+  public function repostOf()
+  {
+    return $this->belongsTo(Post::class, 'repost_of_id');
+  }
+
   public static function publish(Profile $profile, string $content)
   {
     return static::create([
@@ -48,6 +54,27 @@ class Post extends Model
       'content' => $content,
       'parent_id' => null,
       'repost_of_id' => null
+    ]);
+  }
+
+  public static function reply(Profile $profile, Post $original, string $content)
+  {
+    return static::create([
+      'profile_id' => $profile->id,
+      'content' => $content,
+      'parent_id' => $original->id,
+      'repost_of_id' => null
+    ]);
+  }
+
+  public static function repost(Profile $profile, Post $original, string $content = null)
+  {
+
+    return static::create([
+      'profile_id' => $profile->id,
+      'content' => $content,
+      'parent_id' => null,
+      'repost_of_id' => $original->id
     ]);
   }
 }

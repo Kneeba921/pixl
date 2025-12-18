@@ -2,24 +2,53 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use App\Models\Follow;
+use App\Models\Like;
+use App\Models\Post;
+use App\Models\Profile;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
+  use WithoutModelEvents;
 
-    /**
-     * Seed the application's database.
-     */
-    public function run(): void
-    {
-        // User::factory(10)->create();
+  /**
+   * Seed the application's database.
+   */
+  public function run(): void
+  {
+    $profiles = Profile::factory(20)->create();
 
-        User::factory()->create([
-            // 'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+    foreach ($profiles as $profile) {
+      Post::factory(5)->create(['profile_id' => $profile->id]);
     }
+
+    $posts = Post::all();
+
+    foreach ($profiles as $profile) {
+      $toFollow = $profiles->except($profile->id)->random(rand(3, 7));
+      $toLike = $posts->where('profile_id', '!=', $profile->id)->random(rand(10, 20));
+      $toRepost = $posts->where('profile_id', '!=', $profile->id)->random(rand(2, 5));
+
+      foreach ($toFollow as $target) {
+        Follow::createFollow($profile, $target);
+      }
+
+      foreach ($toLike as $post) {
+        Like::createLike($profile, $post);
+      }
+
+      foreach ($toRepost as $post) {
+        Post::repost($profile, $post, rand(0, 1) ? null : 'Great post!');
+      }
+
+      for ($ii = 0; $ii < rand(20, 30); $ii++) {
+        $parentPost = $posts->random();
+        $replier = $profiles->where('id', '!=', $parentPost->profile_id)->random();
+
+        Post::factory()->reply($parentPost)->create(['profile_id' => $replier->id]);
+      }
+    }
+  }
 }

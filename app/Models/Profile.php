@@ -47,7 +47,7 @@ class Profile extends Model
     );
   }
 
-  public function following()
+  public function followings()
   {
     return $this->belongsToMany(
       Profile::class,
